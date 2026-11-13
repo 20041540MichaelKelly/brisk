@@ -1,0 +1,19 @@
+# An app. Any program that uses ui. is built into a web page.
+# Build with: node bin/brisk.js build examples/tip-splitter.brisk
+ui.title("Tip splitter")
+let bill = ui.input("Bill total")
+let people = ui.input("How many people")
+let result = ui.text("Enter the bill, then tap Split")
+
+fn split()
+  let total = Number(bill.value)
+  let count = Number(people.value)
+  if total > 0 and count > 0
+    let each = (total / count).toFixed(2)
+    result.set("Each person pays {each}")
+  else
+    result.set("Type two numbers first")
+  end
+end
+
+ui.button("Split", split)

@@ -1,0 +1,16 @@
+{
+  "name": "brisk-lang",
+  "version": "0.1.0",
+  "description": "Brisk: a small, fast language that compiles to JavaScript",
+  "private": true,
+  "bin": {
+    "brisk": "bin/brisk.js"
+  },
+  "scripts": {
+    "test": "node test/run.js",
+    "vscode": "node scripts/install-vscode.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

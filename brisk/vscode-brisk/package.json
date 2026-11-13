@@ -1,0 +1,36 @@
+{
+  "name": "brisk-language",
+  "displayName": "Brisk",
+  "description": "Syntax highlighting, indentation and snippets for the Brisk language",
+  "version": "0.1.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "brisk",
+        "aliases": ["Brisk", "brisk"],
+        "extensions": [".brisk"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "brisk",
+        "scopeName": "source.brisk",
+        "path": "./syntaxes/brisk.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "brisk",
+        "path": "./snippets/brisk.json"
+      }
+    ]
+  }
+}

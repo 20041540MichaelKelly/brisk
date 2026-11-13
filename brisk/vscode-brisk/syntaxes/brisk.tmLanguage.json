@@ -1,0 +1,52 @@
+{
+  "name": "Brisk",
+  "scopeName": "source.brisk",
+  "patterns": [{ "include": "#expression" }],
+  "repository": {
+    "expression": {
+      "patterns": [
+        { "name": "comment.line.number-sign.brisk", "match": "#.*$" },
+        { "include": "#string-double" },
+        {
+          "name": "string.quoted.single.brisk",
+          "begin": "'",
+          "end": "'",
+          "patterns": [{ "name": "constant.character.escape.brisk", "match": "\\\\." }]
+        },
+        { "name": "constant.numeric.brisk", "match": "\\b\\d+(\\.\\d+)?\\b" },
+        {
+          "match": "\\b(fn)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": { "name": "storage.type.function.brisk" },
+            "2": { "name": "entity.name.function.brisk" }
+          }
+        },
+        { "name": "keyword.control.brisk", "match": "\\b(if|else|while|for|in|repeat|return|break|continue|end)\\b" },
+        { "name": "storage.type.brisk", "match": "\\b(let|var|fn|test)\\b" },
+        { "name": "keyword.operator.word.brisk", "match": "\\b(and|or|not|is|isnt)\\b" },
+        { "name": "constant.language.brisk", "match": "\\b(true|false|nil)\\b" },
+        { "name": "support.function.brisk", "match": "\\b(say|expect)\\b" },
+        { "name": "support.class.brisk", "match": "\\bui(?=\\.)" },
+        { "name": "entity.name.function.brisk", "match": "\\b[A-Za-z_]\\w*(?=\\()" },
+        { "name": "keyword.operator.brisk", "match": "\\.\\.|==|!=|<=|>=|[+\\-*/%=<>]" }
+      ]
+    },
+    "string-double": {
+      "name": "string.quoted.double.brisk",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "name": "constant.character.escape.brisk", "match": "\\\\." },
+        {
+          "name": "meta.interpolation.brisk",
+          "begin": "\\{",
+          "end": "\\}",
+          "beginCaptures": { "0": { "name": "punctuation.section.interpolation.begin.brisk" } },
+          "endCaptures": { "0": { "name": "punctuation.section.interpolation.end.brisk" } },
+          "contentName": "source.brisk",
+          "patterns": [{ "include": "#expression" }]
+        }
+      ]
+    }
+  }
+}
