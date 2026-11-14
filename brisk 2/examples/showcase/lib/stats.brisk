@@ -1,0 +1,21 @@
+# Helpers shared by the backend and the screen.
+fn totalVotes(ideas)
+  var sum = 0
+  for idea in ideas
+    sum = sum + idea.votes
+  end
+  return sum
+end
+
+# Most votes first. slice() copies the list, so the original keeps its order.
+fn ranked(ideas)
+  return ideas.slice().sort(fn(a, b) -> b.votes - a.votes)
+end
+
+# part as a fraction of whole, from 0 to 1.
+fn share(part, whole)
+  if whole is 0
+    return 0
+  end
+  return part / whole
+end

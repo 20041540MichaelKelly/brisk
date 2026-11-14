@@ -1,0 +1,19 @@
+# Tests for the helpers. Run with: node bin/brisk.js run examples/showcase/stats.test.brisk
+use "lib/stats.brisk"
+
+let sample = [{ title: "a", votes: 2 }, { title: "b", votes: 5 }, { title: "c", votes: 1 }]
+
+test "totalVotes adds every vote"
+  expect totalVotes(sample) == 8
+  expect totalVotes([]) == 0
+end
+
+test "ranked puts the most votes first and leaves the list alone"
+  expect ranked(sample)[0].title is "b"
+  expect sample[0].title is "a"
+end
+
+test "share is a fraction, and safe when the whole is zero"
+  expect share(1, 4) == 0.25
+  expect share(3, 0) == 0
+end

@@ -1,0 +1,32 @@
+# A tiny canvas game loop: a ball that bounces, and speeds up when you tap.
+ui.title("Bounce")
+let pen = ui.canvas(300, 300)
+var x = 150
+var y = 60
+var dx = 2
+var dy = 3
+var taps = 0
+let score = ui.text("Tap the square to speed the ball up")
+
+fn tick()
+  x = x + dx
+  y = y + dy
+  if x < 12 or x > pen.width - 12
+    dx = -dx
+  end
+  if y < 12 or y > pen.height - 12
+    dy = -dy
+  end
+  pen.clear("#eef1f4")
+  pen.circle(x, y, 12, "#0b6e75")
+end
+
+fn tapped(tapX, tapY)
+  taps = taps + 1
+  dx = dx * 1.2
+  dy = dy * 1.2
+  score.set("Taps: {taps}")
+end
+
+pen.onTap(tapped)
+ui.every(16, tick)

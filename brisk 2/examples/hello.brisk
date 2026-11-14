@@ -1,0 +1,36 @@
+# Run with: node bin/brisk.js run examples/hello.brisk
+let name = "Mick"
+var total = 0
+
+fn square(n)
+  return n * n
+end
+
+for i in 1..5
+  total = total + square(i)
+end
+
+say "Hello {name}, the sum of squares is {total}"
+
+if total > 50 and name is "Mick"
+  say "That is a big number"
+else
+  say "That is a small number"
+end
+
+let snacks = ["tea", "toast", "jam"]
+for snack in snacks
+  say "- {snack}"
+end
+
+repeat 2
+  say "again"
+end
+
+test "square works"
+  expect square(4) == 16
+end
+
+test "strings join up"
+  expect "a" + "b" is "ab"
+end

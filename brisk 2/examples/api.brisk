@@ -1,0 +1,22 @@
+# A backend with no screen: a small JSON API.
+# Start it with: node bin/brisk.js serve examples/api.brisk
+# Then open http://localhost:3000/notes
+use "lib/words.brisk"
+
+data Note
+  title: text
+  words: number
+end
+
+route GET "/notes"
+  return all Note
+end
+
+route POST "/notes"
+  let title = req.body.title
+  return save Note { title: title, words: countWords(title) }
+end
+
+route GET "/hello/:name"
+  return "Hello {req.params.name}"
+end

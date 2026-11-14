@@ -1,0 +1,137 @@
+{
+  "Function": {
+    "prefix": "fn",
+    "body": [
+      "fn ${1:name}(${2:args})",
+      "  $0",
+      "end"
+    ],
+    "description": "Define a function"
+  },
+  "If": {
+    "prefix": "if",
+    "body": [
+      "if ${1:condition}",
+      "  $0",
+      "end"
+    ],
+    "description": "If block"
+  },
+  "If else": {
+    "prefix": "ife",
+    "body": [
+      "if ${1:condition}",
+      "  $2",
+      "else",
+      "  $0",
+      "end"
+    ],
+    "description": "If and else"
+  },
+  "For range": {
+    "prefix": "for",
+    "body": [
+      "for ${1:i} in ${2:1}..${3:10}",
+      "  $0",
+      "end"
+    ],
+    "description": "Count from one number to another"
+  },
+  "For each": {
+    "prefix": "each",
+    "body": [
+      "for ${1:item} in ${2:list}",
+      "  $0",
+      "end"
+    ],
+    "description": "Go through a list"
+  },
+  "While": {
+    "prefix": "while",
+    "body": [
+      "while ${1:condition}",
+      "  $0",
+      "end"
+    ],
+    "description": "While loop"
+  },
+  "Repeat": {
+    "prefix": "repeat",
+    "body": [
+      "repeat ${1:3}",
+      "  $0",
+      "end"
+    ],
+    "description": "Do something several times"
+  },
+  "Test": {
+    "prefix": "test",
+    "body": [
+      "test \"${1:what it checks}\"",
+      "  expect ${0:value == expected}",
+      "end"
+    ],
+    "description": "A test"
+  },
+  "Say": {
+    "prefix": "say",
+    "body": [
+      "say \"${1:text}\""
+    ],
+    "description": "Print a line"
+  },
+  "Button": {
+    "prefix": "button",
+    "body": [
+      "fn ${1:tapped}()",
+      "  $0",
+      "end",
+      "ui.button(\"${2:Label}\", ${1:tapped})"
+    ],
+    "description": "A button and the function it runs"
+  },
+  "Data": {
+    "prefix": "data",
+    "body": [
+      "data ${1:Thing}",
+      "  ${2:name}: ${3|text,number,yes/no,list,any|}",
+      "end"
+    ],
+    "description": "A shape for saved data"
+  },
+  "Server function": {
+    "prefix": "server",
+    "body": [
+      "server fn ${1:name}(${2:args})",
+      "  $0",
+      "end"
+    ],
+    "description": "A function that runs on the backend"
+  },
+  "Screen": {
+    "prefix": "screen",
+    "body": [
+      "screen",
+      "  ui.title(\"${1:Title}\")",
+      "  $0",
+      "end"
+    ],
+    "description": "The frontend, redrawn when saved data changes"
+  },
+  "Route": {
+    "prefix": "route",
+    "body": [
+      "route ${1|GET,POST,PUT,PATCH,DELETE|} \"/${2:path}\"",
+      "  return $0",
+      "end"
+    ],
+    "description": "A backend URL"
+  },
+  "Inline function": {
+    "prefix": "fnx",
+    "body": [
+      "fn(${1:x}) -> ${0:x}"
+    ],
+    "description": "A one-line function"
+  }
+}

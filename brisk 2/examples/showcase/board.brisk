@@ -1,0 +1,109 @@
+# Feature board: suggest ideas, vote on them, and mark them shipped.
+# One file holds the saved data, the backend, a JSON API and the screen.
+#
+#   node bin/brisk.js serve examples/showcase/board.brisk
+#
+use "lib/stats.brisk"
+
+data Idea
+  title: text
+  votes: number
+  shipped: yes/no
+end
+
+# A server block runs once, when the backend starts.
+server
+  if (all Idea).length is 0
+    save Idea { title: "Error squiggles in VS Code", votes: 5 }
+    save Idea { title: "Live updates between users", votes: 3 }
+    save Idea { title: "User accounts", votes: 2 }
+    save Idea { title: "Online playground", votes: 1 }
+  end
+end
+
+# Backend functions. The screen calls them like any other function.
+server fn addIdea(title)
+  let clean = title.trim()
+  if clean.length < 4
+    fail "An idea needs at least 4 letters"
+  end
+  if clean.length > 40
+    fail "Keep ideas under 40 letters"
+  end
+  if (all Idea).some(fn(i) -> i.title.toLowerCase() is clean.toLowerCase())
+    fail "That idea is already on the board"
+  end
+  return save Idea { title: clean, votes: 1 }
+end
+
+server fn vote(idea)
+  update idea { votes: idea.votes + 1 }
+end
+
+server fn ship(idea)
+  update idea { shipped: true }
+end
+
+server fn clearShipped()
+  for idea in all Idea
+    if idea.shipped
+      remove idea
+    end
+  end
+end
+
+# A JSON API for other programs, from the same data.
+route GET "/api/ideas"
+  return ranked(all Idea)
+end
+
+route GET "/api/stats"
+  let ideas = all Idea
+  return { ideas: ideas.length, votes: totalVotes(ideas), shipped: ideas.filter(fn(i) -> i.shipped).length }
+end
+
+# The frontend. It is drawn again whenever the saved data changes.
+screen
+  let ideas = ranked(all Idea)
+  let waiting = ideas.filter(fn(i) -> not i.shipped)
+  let shipped = ideas.filter(fn(i) -> i.shipped)
+
+  ui.title("Feature board")
+  ui.text("{waiting.length} ideas waiting, {totalVotes(ideas)} votes, {shipped.length} shipped")
+
+  let box = ui.input("Suggest a feature")
+  fn suggest()
+    addIdea(box.value)
+    box.value = ""
+  end
+  ui.button("Suggest", suggest)
+
+  # A chart of the leaders, drawn on a canvas.
+  let leaders = waiting.slice(0, 5)
+  if leaders.length > 0
+    let chart = ui.canvas(320, 38 * leaders.length + 6)
+    chart.clear("#eef1f4")
+    var y = 6
+    for idea in leaders
+      chart.text(idea.title, 8, y + 13, "#18212b", 14)
+      chart.rect(8, y + 19, 8 + 296 * share(idea.votes, leaders[0].votes), 8, "#0b6e75")
+      y = y + 38
+    end
+  end
+
+  for idea in waiting
+    ui.button("Vote: {idea.title} ({idea.votes})", fn -> vote(idea))
+  end
+
+  if waiting.length > 0
+    let leader = waiting[0]
+    ui.button("Mark the leader as shipped", fn -> ship(leader))
+  end
+
+  for idea in shipped
+    ui.text("Shipped: {idea.title} ({idea.votes} votes)").color("gray")
+  end
+  if shipped.length > 0
+    ui.button("Clear shipped ideas", clearShipped)
+  end
+end

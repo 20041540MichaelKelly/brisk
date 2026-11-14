@@ -1,0 +1,51 @@
+# A whole app in one file: saved data, a backend and a screen.
+# Start it with: node bin/brisk.js serve examples/tasks.brisk
+
+data Task
+  text: text
+  done: yes/no
+end
+
+# server fn runs on the backend. Calling it from the screen sends a request for you.
+server fn addTask(text)
+  if text is ""
+    return nil
+  end
+  return save Task { text: text, done: false }
+end
+
+server fn finish(task)
+  update task { done: true }
+end
+
+server fn clearDone()
+  for task in all Task
+    if task.done
+      remove task
+    end
+  end
+end
+
+# The screen is drawn again whenever the saved data changes.
+screen
+  ui.title("Tasks")
+  let box = ui.input("What needs doing?")
+
+  fn add()
+    addTask(box.value)
+    box.value = ""
+  end
+  ui.button("Add task", add)
+
+  for task in all Task
+    if task.done
+      ui.text("Done: {task.text}").color("gray")
+    else
+      ui.button("Finish: {task.text}", fn -> finish(task))
+    end
+  end
+
+  let left = (all Task).filter(fn(t) -> not t.done).length
+  ui.text("{left} left to do")
+  ui.button("Clear finished tasks", clearDone)
+end

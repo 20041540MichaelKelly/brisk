@@ -1,0 +1,16 @@
+{
+  "name": "brisk-lang",
+  "version": "0.2.0",
+  "description": "Brisk: one small language for the frontend and the backend",
+  "private": true,
+  "bin": {
+    "brisk": "bin/brisk.js"
+  },
+  "scripts": {
+    "test": "node test/run.js",
+    "vscode": "node scripts/install-vscode.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

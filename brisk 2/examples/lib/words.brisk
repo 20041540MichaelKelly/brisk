@@ -1,0 +1,9 @@
+# A file of helpers. Other files pull it in with: use "lib/words.brisk"
+fn countWords(text)
+  let words = text.trim().split(" ").filter(fn(w) -> w isnt "")
+  return words.length
+end
+
+test "counts words"
+  expect countWords("one two  three") == 3
+end
